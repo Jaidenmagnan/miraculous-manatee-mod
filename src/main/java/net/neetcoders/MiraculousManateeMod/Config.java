@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package net.neetcoders.MiraculousManateeMod;
 
 import java.util.List;
 import java.util.Set;
