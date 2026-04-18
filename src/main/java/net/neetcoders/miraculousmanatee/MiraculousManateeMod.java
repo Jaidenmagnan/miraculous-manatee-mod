@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -17,12 +18,13 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neetcoders.miraculousmanatee.registry.ModItems;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(MiraculousManateeMod.MOD_ID)
 public class MiraculousManateeMod {
     // Define mod id in a common place for everything to reference
-    public static final String MOD_ID = "miraculous_manatee_mod";
+    public static final String MOD_ID = "miraculousmanatee";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
@@ -36,6 +38,7 @@ public class MiraculousManateeMod {
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         ModEntities.ENTITY_TYPES.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -44,7 +47,9 @@ public class MiraculousManateeMod {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.BLUBBER);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
