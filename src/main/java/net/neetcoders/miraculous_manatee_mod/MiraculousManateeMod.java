@@ -59,6 +59,8 @@ public class MiraculousManateeMod {
         // Register our mod's ModConfigSpec so that FML can create and load the config
         // file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        ModItems.ITEMS.register(modEventBus);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -67,7 +69,9 @@ public class MiraculousManateeMod {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.BLUBBER);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
