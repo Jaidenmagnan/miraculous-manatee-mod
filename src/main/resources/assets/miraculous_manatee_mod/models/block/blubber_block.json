@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "miraculous_manatee_mod:block/blubber_block"
-  }
-}
