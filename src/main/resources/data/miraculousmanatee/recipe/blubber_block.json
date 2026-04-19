@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     "###",
     "###",
@@ -11,7 +12,7 @@
     }
   },
   "result": {
-    "item": "miraculousmanatee:blubber_block",
+    "id": "miraculousmanatee:blubber_block",
     "count": 1
   }
 }
