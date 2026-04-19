@@ -127,6 +127,66 @@
 					}
 				}
 			}
+		},
+		"animation.manatee.sit": {
+			"loop": true,
+			"animation_length": 0.75,
+			"bones": {
+				"root": {
+					"rotation": {
+						"vector": [-27.5, 0, 0]
+					}
+				},
+				"head": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4167": {
+							"vector": [-5, 0, 0]
+						},
+						"0.75": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"leftFin": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4167": {
+							"vector": [0, 0, -20]
+						},
+						"0.75": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"rightFin": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4167": {
+							"vector": [0, 0, 20]
+						},
+						"0.75": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"tailBase": {
+					"rotation": {
+						"vector": [-5, 0, 0]
+					}
+				},
+				"tailEnd": {
+					"rotation": {
+						"vector": [-10, 0, 0]
+					}
+				}
+			}
 		}
 	}
 }
