@@ -84,8 +84,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
             this.moveRelative(this.getSpeed(), travelVector);
             this.move(net.minecraft.world.entity.MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-        }
-        else {
+        } else {
             super.travel(travelVector);
         }
     }
@@ -103,7 +102,6 @@ public class Manatee extends TamableAnimal implements GeoEntity {
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
-
 
     public static AttributeSupplier.Builder createAttributes() {
         return WaterAnimal.createMobAttributes()
@@ -127,7 +125,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     private PlayState handle(AnimationState<Manatee> state) {
         if (this.isInSittingPose()) {
-            return state.setAndContinue(RawAnimation.begin().thenLoop("animation.manatee.idle"));
+            return state.setAndContinue(RawAnimation.begin().thenLoop("animation.manatee.sit"));
         }
 
         if (state.isMoving()) {
@@ -147,22 +145,21 @@ public class Manatee extends TamableAnimal implements GeoEntity {
         ItemStack itemStack = player.getItemInHand(hand);
 
         // taming food is seagrass, configurable at top
-        if(!this.isTame() && itemStack.is(TAMING_FOOD)) {
+        if (!this.isTame() && itemStack.is(TAMING_FOOD)) {
             // is this checking if the player is in creative?
-            if(!player.getAbilities().instabuild) {
+            if (!player.getAbilities().instabuild) {
                 itemStack.shrink(1);
             }
 
-            if(!this.level().isClientSide) {
+            if (!this.level().isClientSide) {
                 // 1 in 3 chance to tame
-                if(this.random.nextInt(3) == 0) {
+                if (this.random.nextInt(3) == 0) {
                     this.tame(player);
                     this.setOrderedToSit(true);
                     this.navigation.stop();
                     this.setTarget(null);
                     this.level().broadcastEntityEvent(this, (byte) 7);
-                }
-                else {
+                } else {
                     this.level().broadcastEntityEvent(this, (byte) 6);
                 }
 
@@ -171,8 +168,8 @@ public class Manatee extends TamableAnimal implements GeoEntity {
         }
 
         // owner toggle sit
-        if(this.isTame() && this.isOwnedBy(player)) {
-            if(!this.level().isClientSide) {
+        if (this.isTame() && this.isOwnedBy(player)) {
+            if (!this.level().isClientSide) {
                 this.setOrderedToSit(!this.isOrderedToSit());
                 this.setInSittingPose(this.isOrderedToSit());
                 this.navigation.stop();
