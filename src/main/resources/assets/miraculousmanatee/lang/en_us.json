@@ -1,7 +1,10 @@
 {
   "itemGroup.miraculousmanatee": "Blubber",
+  "itemGroup.miraculousmanatee.main": "Miraculous Manatee",
   "item.miraculousmanatee.blubber": "Blubber",
   "block.miraculousmanatee.blubber_pile": "Blubber Pile",
   "block.miraculousmanatee.blubber_block": "Blubber Block",
-  "item.miraculousmanatee.blubber_block": "Blubber Block"
+  "item.miraculousmanatee.blubber_block": "Blubber Block",
+  "item.miraculousmanatee.penguin_spawn_egg": "Penguin Spawn Egg",
+  "item.miraculousmanatee.manatee_spawn_egg": "Manatee Spawn Egg"
 }

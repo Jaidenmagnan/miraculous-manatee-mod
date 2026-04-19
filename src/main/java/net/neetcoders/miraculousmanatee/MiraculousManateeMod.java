@@ -6,6 +6,7 @@ import com.mojang.logging.LogUtils;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
+import net.neetcoders.miraculousmanatee.registry.ModCreativeTabs;
 import net.neetcoders.miraculousmanatee.registry.ModItems;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -39,6 +40,7 @@ public class MiraculousManateeMod {
 
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
     }
 
