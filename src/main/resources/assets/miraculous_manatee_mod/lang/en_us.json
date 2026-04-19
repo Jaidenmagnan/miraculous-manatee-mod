@@ -1,5 +1,6 @@
 {
-  "itemGroup.miraculous_manatee_mod": "Blubber",
-  "block.miraculous_manatee_mod.blubber": "Blubber",
-  "item.miraculous_manatee_mod.blubber": "Blubber"
+  "item.miraculous_manatee_mod.blubber": "Blubber",
+  "block.miraculous_manatee_mod.blubber_pile": "Blubber Pile",
+  "block.miraculous_manatee_mod.blubber_block": "Blubber Block",
+  "item.miraculous_manatee_mod.blubber_block": "Blubber Block"
 }

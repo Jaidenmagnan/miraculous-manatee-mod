@@ -1,4 +1,4 @@
-package net.neetcoders.MiraculousManateeMod;
+package net.neetcoders.miraculous_manatee_mod;
 
 import java.util.List;
 import java.util.Set;

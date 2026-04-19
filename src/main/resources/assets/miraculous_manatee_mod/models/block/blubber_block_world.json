@@ -1,0 +1,33 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "miraculous_manatee_mod:block/blubber_block",
+    "texture": "miraculous_manatee_mod:block/blubber_block"
+  },
+  "elements": [
+    {
+      "from": [3, 3, 3],
+      "to": [13, 13, 13],
+      "faces": {
+        "north": { "uv": [3, 3, 13, 13], "texture": "#texture" },
+        "east": { "uv": [3, 3, 13, 13], "texture": "#texture" },
+        "south": { "uv": [3, 3, 13, 13], "texture": "#texture" },
+        "west": { "uv": [3, 3, 13, 13], "texture": "#texture" },
+        "up": { "uv": [3, 3, 13, 13], "texture": "#texture" },
+        "down": { "uv": [3, 3, 13, 13], "texture": "#texture" }
+      }
+    },
+    {
+      "from": [0.8, 0, 0.8],
+      "to": [15.2, 14.4, 15.2],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#texture" },
+        "east": { "uv": [0, 0, 16, 16], "texture": "#texture" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#texture" },
+        "west": { "uv": [0, 0, 16, 16], "texture": "#texture" },
+        "up": { "uv": [0, 0, 16, 16], "texture": "#texture" },
+        "down": { "uv": [0, 0, 16, 16], "texture": "#texture" }
+      }
+    }
+  ]
+}

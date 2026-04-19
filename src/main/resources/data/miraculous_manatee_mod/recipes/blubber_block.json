@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "###",
+      "###",
+      "###"
+    ],
+    "key": {
+      "#": {
+        "item": "miraculous_manatee_mod:blubber"
+      }
+    },
+    "result": {
+      "id": "miraculous_manatee_mod:blubber_block",
+      "count": 1
+    }
+  }
