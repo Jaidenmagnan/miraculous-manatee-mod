@@ -1,4 +1,4 @@
-package net.neetcoders.miraculousmanatee;
+package net.neetcoders.miraculousmanatee.block;
 
 import javax.annotation.Nullable;
 
@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neetcoders.miraculousmanatee.registry.ModItems;
+import net.neetcoders.miraculousmanatee.registry.ModBlocks;
 
 public class BlubberPileBlock extends Block {
     public static final IntegerProperty LAYERS = IntegerProperty.create("layers", 1, 8);

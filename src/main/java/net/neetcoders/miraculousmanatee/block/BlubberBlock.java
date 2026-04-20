@@ -1,4 +1,4 @@
-package net.neetcoders.miraculousmanatee;
+package net.neetcoders.miraculousmanatee.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
