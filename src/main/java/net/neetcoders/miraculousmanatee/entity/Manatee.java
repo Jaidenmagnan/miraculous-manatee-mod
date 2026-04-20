@@ -56,7 +56,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "swim_controller", 0, this::handle));
+        controllers.add(new AnimationController<>(this, "swim_controller", 5, this::handle));
     }
 
     @Override
@@ -85,11 +85,15 @@ public class Manatee extends TamableAnimal implements GeoEntity {
     }
 
     // crazy water movement stuff from chatgpt :sob:
-
     @Override
     public void travel(@NotNull Vec3 travelVector) {
+        if (this.isInSittingPose()) {
+            this.setDeltaMovement(0, 0, 0);
+            return;
+        }
         if (this.isEffectiveAi() && this.isInWater()) {
             this.moveRelative(this.getSpeed(), travelVector);
+            this.setDeltaMovement(this.getDeltaMovement().add(0, travelVector.y * this.getSpeed(), 0));
             this.move(net.minecraft.world.entity.MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
         } else {
@@ -135,7 +139,8 @@ public class Manatee extends TamableAnimal implements GeoEntity {
     }
 
     private PlayState handle(AnimationState<Manatee> state) {
-        if (this.isOrderedToSit()) {
+        if (this.isInSittingPose()) {
+            System.out.println("IN SITTING POSE");
             return state.setAndContinue(RawAnimation.begin().thenLoop("animation.manatee.sit"));
         }
 
@@ -188,16 +193,20 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
             // Owner interactions
             if (this.isTame() && this.isOwnedBy(player) && hand == InteractionHand.MAIN_HAND) {
-                if (player.isShiftKeyDown()) {
-                    player.openMenu(new SimpleMenuProvider(
-                            (containerId, playerInv, p) -> ChestMenu.threeRows(containerId, playerInv,
-                                    this.inventory),
-                            Component.literal("Manatee Storage")));
-                } else {
-                    this.setOrderedToSit(!this.isOrderedToSit());
+                if (!this.level().isClientSide()) {
+                    if (player.isShiftKeyDown()) {
+                        player.openMenu(new SimpleMenuProvider(
+                                (containerId, playerInv, p) -> ChestMenu.threeRows(containerId, playerInv,
+                                        this.inventory),
+                                Component.literal("Manatee Storage")));
+                    } else {
+                        boolean pose = !this.isOrderedToSit();
+                        this.setInSittingPose(pose);
+                        this.setOrderedToSit(pose);
+                    }
                 }
-                return InteractionResult.SUCCESS;
             }
+            return InteractionResult.SUCCESS;
         }
 
         return super.mobInteract(player, hand);
