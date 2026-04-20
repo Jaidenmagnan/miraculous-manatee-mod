@@ -1,8 +1,11 @@
 package net.neetcoders.miraculousmanatee.entity;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -10,8 +13,10 @@ import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -27,7 +32,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.SimpleContainer;
 
 public class Manatee extends TamableAnimal implements GeoEntity {
 
@@ -38,6 +45,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
     // BOILERPLATE FUNCTIONS
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    public final SimpleContainer inventory = new SimpleContainer(27);
 
     public Manatee(EntityType<? extends TamableAnimal> type, Level level) {
         super(type, level);
@@ -48,7 +56,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "swim_controller", 5, this::handle));
+        controllers.add(new AnimationController<>(this, "swim_controller", 0, this::handle));
     }
 
     @Override
@@ -97,7 +105,10 @@ public class Manatee extends TamableAnimal implements GeoEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(1, new TryFindWaterGoal(this));
+        this.goalSelector.addGoal(1,
+                new TemptGoal(this, 1.2D, Ingredient.of(Items.SEAGRASS), false));
+
+        this.goalSelector.addGoal(2, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0, 10));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
@@ -124,7 +135,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
     }
 
     private PlayState handle(AnimationState<Manatee> state) {
-        if (this.isInSittingPose()) {
+        if (this.isOrderedToSit()) {
             return state.setAndContinue(RawAnimation.begin().thenLoop("animation.manatee.sit"));
         }
 
@@ -136,47 +147,60 @@ public class Manatee extends TamableAnimal implements GeoEntity {
     }
 
     @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.put("Inventory", inventory.createTag(this.registryAccess()));
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("Inventory")) {
+            inventory.fromTag(tag.getList("Inventory", 10), this.registryAccess());
+        }
+    }
+
+    @Override
     public @Nullable AgeableMob getBreedOffspring(@NotNull ServerLevel serverLevel, @NotNull AgeableMob ageableMob) {
         return ModEntities.MANATEE.get().create(serverLevel);
     }
 
     @Override
-    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
-        ItemStack itemStack = player.getItemInHand(hand);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack heldItem = player.getItemInHand(hand);
 
-        // taming food is seagrass, configurable at top
-        if (!this.isTame() && itemStack.is(TAMING_FOOD)) {
-            // is this checking if the player is in creative?
-            if (!player.getAbilities().instabuild) {
-                itemStack.shrink(1);
-            }
+        if (!this.level().isClientSide()) {
 
-            if (!this.level().isClientSide) {
-                // 1 in 3 chance to tame
+            // Taming with seagrass
+            if (!this.isTame() && heldItem.is(Items.SEAGRASS)) {
+                if (!player.getAbilities().instabuild) {
+                    heldItem.shrink(1);
+                }
                 if (this.random.nextInt(3) == 0) {
                     this.tame(player);
                     this.setOrderedToSit(true);
-                    this.navigation.stop();
-                    this.setTarget(null);
                     this.level().broadcastEntityEvent(this, (byte) 7);
                 } else {
                     this.level().broadcastEntityEvent(this, (byte) 6);
                 }
-
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
+                return InteractionResult.SUCCESS;
             }
-        }
 
-        // owner toggle sit
-        if (this.isTame() && this.isOwnedBy(player)) {
-            if (!this.level().isClientSide) {
-                this.setOrderedToSit(!this.isOrderedToSit());
-                this.setInSittingPose(this.isOrderedToSit());
-                this.navigation.stop();
+            // Owner interactions
+            if (this.isTame() && this.isOwnedBy(player) && hand == InteractionHand.MAIN_HAND) {
+                if (player.isShiftKeyDown()) {
+                    player.openMenu(new SimpleMenuProvider(
+                            (containerId, playerInv, p) -> ChestMenu.threeRows(containerId, playerInv,
+                                    this.inventory),
+                            Component.literal("Manatee Storage")));
+                } else {
+                    this.setOrderedToSit(!this.isOrderedToSit());
+                }
+                return InteractionResult.SUCCESS;
             }
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
         return super.mobInteract(player, hand);
     }
+
 }
