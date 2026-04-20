@@ -8,6 +8,9 @@ public class ModModelLayers {
     public static final ModelLayerLocation MANATEE = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(MiraculousManateeMod.MOD_ID, "manatee"), "main");
 
+    public static final ModelLayerLocation AN_MANATEE = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(MiraculousManateeMod.MOD_ID, "anmanatee"), "main");
+
     public static final ModelLayerLocation PENGUIN = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(MiraculousManateeMod.MOD_ID, "penguin"), "main");
 }

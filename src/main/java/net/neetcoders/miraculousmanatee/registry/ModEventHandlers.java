@@ -24,6 +24,7 @@ public class ModEventHandlers {
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(ModEntities.MANATEE.get(), Manatee.createAttributes().build());
+        event.put(ModEntities.AN_MANATEE.get(), Manatee.createAttributes().build());
         event.put(ModEntities.PENGUIN.get(), Penguin.createAttributes().build());
     }
 }

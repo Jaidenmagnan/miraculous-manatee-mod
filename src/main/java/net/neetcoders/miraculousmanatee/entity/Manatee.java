@@ -140,7 +140,6 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     private PlayState handle(AnimationState<Manatee> state) {
         if (this.isInSittingPose()) {
-            System.out.println("IN SITTING POSE");
             return state.setAndContinue(RawAnimation.begin().thenLoop("animation.manatee.sit"));
         }
 
