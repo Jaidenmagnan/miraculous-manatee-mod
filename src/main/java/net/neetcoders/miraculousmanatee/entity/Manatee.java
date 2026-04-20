@@ -198,7 +198,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
                         player.openMenu(new SimpleMenuProvider(
                                 (containerId, playerInv, p) -> ChestMenu.threeRows(containerId, playerInv,
                                         this.inventory),
-                                Component.literal("Manatee Storage")));
+                                Component.literal("Manatee's Belly")));
                     } else {
                         boolean pose = !this.isOrderedToSit();
                         this.setInSittingPose(pose);
