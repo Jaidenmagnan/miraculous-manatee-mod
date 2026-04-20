@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "layers=1": { "model": "miraculousmanatee:block/blubber_pile" },
+    "layers=2": { "model": "miraculousmanatee:block/blubber_pile" },
+    "layers=3": { "model": "miraculousmanatee:block/blubber_pile" },
+    "layers=4": { "model": "miraculousmanatee:block/blubber_pile" },
+    "layers=5": { "model": "miraculousmanatee:block/blubber_pile" },
+    "layers=6": { "model": "miraculousmanatee:block/blubber_pile" },
+    "layers=7": { "model": "miraculousmanatee:block/blubber_pile" },
+    "layers=8": { "model": "miraculousmanatee:block/blubber_pile" }
+  }
+}

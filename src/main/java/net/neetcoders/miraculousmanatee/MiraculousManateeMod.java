@@ -6,6 +6,8 @@ import com.mojang.logging.LogUtils;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
+import net.neetcoders.miraculousmanatee.registry.ModCreativeTabs;
+import net.neetcoders.miraculousmanatee.registry.ModItems;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -18,7 +20,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neetcoders.miraculousmanatee.registry.ModItems;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(MiraculousManateeMod.MOD_ID)
@@ -39,6 +40,8 @@ public class MiraculousManateeMod {
 
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+        ModBlocks.BLOCKS.register(modEventBus);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -49,6 +52,7 @@ public class MiraculousManateeMod {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ModItems.BLUBBER);
+            event.accept(ModItems.BLUBBER_BLOCK);
         }
     }
 
