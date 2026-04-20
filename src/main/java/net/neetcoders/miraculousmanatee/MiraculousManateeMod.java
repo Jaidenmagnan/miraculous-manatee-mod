@@ -6,6 +6,7 @@ import com.mojang.logging.LogUtils;
 
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
+import net.neetcoders.miraculousmanatee.registry.ModBlocks;
 import net.neetcoders.miraculousmanatee.registry.ModCreativeTabs;
 import net.neetcoders.miraculousmanatee.registry.ModItems;
 import net.neoforged.api.distmarker.Dist;

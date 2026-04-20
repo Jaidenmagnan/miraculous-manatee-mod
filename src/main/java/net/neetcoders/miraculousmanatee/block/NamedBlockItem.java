@@ -1,4 +1,4 @@
-package net.neetcoders.miraculousmanatee.registry;
+package net.neetcoders.miraculousmanatee.block;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.BlockItem;
