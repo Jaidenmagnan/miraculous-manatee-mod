@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
+import net.neetcoders.miraculousmanatee.goal.GrazeSeagrassGoal;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,8 @@ import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Leashable;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
@@ -46,12 +49,17 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     public final SimpleContainer inventory = new SimpleContainer(27);
+    public int grazeCooldown = 0;
 
     public Manatee(EntityType<? extends TamableAnimal> type, Level level) {
         super(type, level);
         this.setPathfindingMalus(PathType.WATER, 0.0f);
         // make it not want to go on land
         this.setPathfindingMalus(PathType.WALKABLE, 8.0F);
+    }
+
+    public SimpleContainer getInventory() {
+        return inventory;
     }
 
     @Override
@@ -71,7 +79,9 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     @Override
     protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
-        return new WaterBoundPathNavigation(this, level);
+        var nav = new WaterBoundPathNavigation(this, level);
+        nav.setCanFloat(true);
+        return nav;
     }
 
     @Override
@@ -81,6 +91,10 @@ public class Manatee extends TamableAnimal implements GeoEntity {
         // doesn't drown in water
         if (this.isInWaterOrBubble()) {
             this.setAirSupply(this.getMaxAirSupply());
+        }
+
+        if (!this.level().isClientSide && grazeCooldown > 0) {
+            grazeCooldown--;
         }
     }
 
@@ -93,9 +107,19 @@ public class Manatee extends TamableAnimal implements GeoEntity {
         }
         if (this.isEffectiveAi() && this.isInWater()) {
             this.moveRelative(this.getSpeed(), travelVector);
-            this.setDeltaMovement(this.getDeltaMovement().add(0, travelVector.y * this.getSpeed(), 0));
-            this.move(net.minecraft.world.entity.MoverType.SELF, this.getDeltaMovement());
+            this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+
+            // if navigation has a path, steer toward target Y
+            var path = this.getNavigation().getPath();
+            if (path != null && !path.isDone()) {
+                var target = path.getNextNodePos();
+                double dy = target.getY() + 0.5 - this.getY();
+                this.setDeltaMovement(
+                        this.getDeltaMovement().x,
+                        dy * 0.1 * this.getSpeed() * 10,
+                        this.getDeltaMovement().z);
+            }
         } else {
             super.travel(travelVector);
         }
@@ -113,15 +137,17 @@ public class Manatee extends TamableAnimal implements GeoEntity {
                 new TemptGoal(this, 1.2D, Ingredient.of(Items.SEAGRASS), false));
 
         this.goalSelector.addGoal(2, new TryFindWaterGoal(this));
-        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0, 10));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0f));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(3, new GrazeSeagrassGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0, 10));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0f));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return WaterAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 30)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
+                .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1.0)
                 .add(Attributes.SCALE, 1.5);
     }
 
@@ -140,7 +166,6 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     private PlayState handle(AnimationState<Manatee> state) {
         if (this.isInSittingPose()) {
-            System.out.println("IN SITTING POSE");
             return state.setAndContinue(RawAnimation.begin().thenLoop("animation.manatee.sit"));
         }
 
@@ -154,14 +179,28 @@ public class Manatee extends TamableAnimal implements GeoEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("Inventory", inventory.createTag(this.registryAccess()));
+        tag.putInt("GrazeCooldown", grazeCooldown);
+        CompoundTag invTag = new CompoundTag();
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            if (!inventory.getItem(i).isEmpty()) {
+                invTag.put(String.valueOf(i), inventory.getItem(i).save(this.registryAccess()));
+            }
+        }
+        tag.put("Inventory", invTag);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        grazeCooldown = tag.getInt("GrazeCooldown");
         if (tag.contains("Inventory")) {
-            inventory.fromTag(tag.getList("Inventory", 10), this.registryAccess());
+            CompoundTag invTag = tag.getCompound("Inventory");
+            for (int i = 0; i < inventory.getContainerSize(); i++) {
+                String key = String.valueOf(i);
+                if (invTag.contains(key)) {
+                    inventory.setItem(i, ItemStack.parseOptional(this.registryAccess(), invTag.getCompound(key)));
+                }
+            }
         }
     }
 
