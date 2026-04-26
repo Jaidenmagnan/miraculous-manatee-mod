@@ -1,7 +1,7 @@
 package net.neetcoders.miraculousmanatee.block;
 
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.Block;
 
 /**
  * A BlockItem that uses its own item translation key instead of the block key.

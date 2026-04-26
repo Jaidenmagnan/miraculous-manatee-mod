@@ -1,11 +1,10 @@
 package net.neetcoders.miraculousmanatee.registry;
 
 import net.minecraft.world.item.BlockItem;
-import net.neetcoders.miraculousmanatee.block.NamedBlockItem;
 import net.minecraft.world.item.Item;
 import net.neetcoders.miraculousmanatee.MiraculousManateeMod;
+import net.neetcoders.miraculousmanatee.block.NamedBlockItem;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
-import net.neetcoders.miraculousmanatee.registry.ModBlocks;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 

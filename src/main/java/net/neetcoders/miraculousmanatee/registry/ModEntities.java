@@ -1,16 +1,18 @@
 package net.neetcoders.miraculousmanatee.registry;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.neetcoders.miraculousmanatee.MiraculousManateeMod;
-
 import net.neetcoders.miraculousmanatee.entity.Manatee;
 import net.neetcoders.miraculousmanatee.entity.Penguin;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.EntityType;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class ModEntities {
+public final class ModEntities {
+    private ModEntities() {
+    }
+
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE,
             MiraculousManateeMod.MOD_ID);
 
