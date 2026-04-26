@@ -5,6 +5,7 @@ import net.neetcoders.miraculousmanatee.registry.ModBlocks;
 import net.neetcoders.miraculousmanatee.registry.ModCreativeTabs;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
 import net.neetcoders.miraculousmanatee.registry.ModItems;
+import net.neetcoders.miraculousmanatee.worldgen.ModWorldgen;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -18,6 +19,8 @@ public final class MiraculousManateeMod {
         ModItems.ITEMS.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
+
+        ModWorldgen.register();
 
         modEventBus.addListener(this::addCreative);
     }
