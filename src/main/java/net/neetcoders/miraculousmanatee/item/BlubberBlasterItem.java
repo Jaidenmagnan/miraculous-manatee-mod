@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.neetcoders.miraculousmanatee.config.ModServerConfig;
 import net.neetcoders.miraculousmanatee.entity.BlubberProjectile;
 import net.neetcoders.miraculousmanatee.registry.ModItems;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -22,7 +23,6 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class BlubberBlasterItem extends Item implements GeoItem {
-    private static final int COOLDOWN_TICKS = 12;
     private static final float PROJECTILE_VELOCITY = 1.5f;
     private static final float PROJECTILE_INACCURACY = 1.0f;
 
@@ -61,7 +61,7 @@ public class BlubberBlasterItem extends Item implements GeoItem {
             ammo.shrink(1);
         }
 
-        player.getCooldowns().addCooldown(this, COOLDOWN_TICKS);
+        player.getCooldowns().addCooldown(this, ModServerConfig.BLUBBER_BLASTER_COOLDOWN_TICKS.get());
         return InteractionResultHolder.sidedSuccess(blaster, level.isClientSide());
     }
 

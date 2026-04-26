@@ -37,5 +37,8 @@ public final class ModEventHandlers {
         event.register(ModEntities.MANATEE.get(), SpawnPlacementTypes.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Manatee::checkManateeSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.PENGUIN.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Penguin::checkPenguinSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

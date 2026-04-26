@@ -18,7 +18,7 @@ public final class ModEntities {
             MiraculousManateeMod.MOD_ID);
 
     public static final DeferredHolder<EntityType<?>, EntityType<Manatee>> MANATEE = ENTITY_TYPES
-            .register("manatee", () -> EntityType.Builder.of(Manatee::new, MobCategory.CREATURE)
+            .register("manatee", () -> EntityType.Builder.of(Manatee::new, MobCategory.WATER_CREATURE)
                     .sized(1.8f, 0.9f)
                     .build("manatee"));
 

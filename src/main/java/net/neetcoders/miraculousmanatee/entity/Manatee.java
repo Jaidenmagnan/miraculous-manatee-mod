@@ -34,8 +34,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
+import net.neetcoders.miraculousmanatee.config.ModServerConfig;
 import net.neetcoders.miraculousmanatee.entity.goal.ManateeGrazeKelpGoal;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
 import net.neetcoders.miraculousmanatee.registry.ModItems;
@@ -129,7 +131,12 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     public static boolean checkManateeSpawnRules(EntityType<Manatee> entityType, LevelAccessor level,
             MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getFluidState(pos).is(FluidTags.WATER) && level.getFluidState(pos.above()).is(FluidTags.WATER);
+        return level.getFluidState(pos).is(FluidTags.WATER);
+    }
+
+    @Override
+    public boolean checkSpawnObstruction(LevelReader level) {
+        return level.getFluidState(this.blockPosition()).is(FluidTags.WATER);
     }
 
     // make tamed manatees not despawn
@@ -183,7 +190,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
                 if (!player.getAbilities().instabuild) {
                     heldItem.shrink(1);
                 }
-                if (this.random.nextInt(3) == 0) {
+                if (this.random.nextInt(ModServerConfig.MANATEE_TAMING_CHANCE_DENOMINATOR.get()) == 0) {
                     this.tame(player);
                     this.setOrderedToSit(true);
                     this.level().broadcastEntityEvent(this, (byte) 7);

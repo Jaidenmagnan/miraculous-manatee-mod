@@ -1,8 +1,11 @@
 package net.neetcoders.miraculousmanatee.entity;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -16,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,5 +77,10 @@ public class Penguin extends Animal implements GeoEntity {
         return Animal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2);
+    }
+
+    public static boolean checkPenguinSpawnRules(EntityType<Penguin> entityType, LevelAccessor level,
+            MobSpawnType spawnType, net.minecraft.core.BlockPos pos, RandomSource random) {
+        return level.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON);
     }
 }
