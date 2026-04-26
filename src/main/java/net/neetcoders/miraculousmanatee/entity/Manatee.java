@@ -31,7 +31,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
+import net.neetcoders.miraculousmanatee.entity.goal.ManateeGrazeKelpGoal;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
+import net.neetcoders.miraculousmanatee.registry.ModItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -44,7 +46,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class Manatee extends TamableAnimal implements GeoEntity {
-    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(Items.SEAGRASS);
+    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(Items.KELP);
     private static final String INVENTORY_TAG = "Inventory";
     private static final Component INVENTORY_TITLE = Component.literal("Manatee's Belly");
 
@@ -107,9 +109,10 @@ public class Manatee extends TamableAnimal implements GeoEntity {
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(1, new TemptGoal(this, 1.2D, TEMPTATION_ITEMS, false));
         this.goalSelector.addGoal(2, new TryFindWaterGoal(this));
-        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.0, 10));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0f));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(3, new ManateeGrazeKelpGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0, 10));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0f));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -199,5 +202,23 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     public Container getInventory() {
         return inventory;
+    }
+
+    public boolean canStoreBlubber() {
+        ItemStack blubber = new ItemStack(ModItems.BLUBBER.get());
+        for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+            ItemStack itemStack = inventory.getItem(slot);
+            if (itemStack.isEmpty() || (ItemStack.isSameItemSameComponents(itemStack, blubber)
+                    && itemStack.getCount() < itemStack.getMaxStackSize())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean addBlubberToBelly() {
+        ItemStack remainder = inventory.addItem(new ItemStack(ModItems.BLUBBER.get()));
+        return remainder.isEmpty();
     }
 }

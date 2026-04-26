@@ -4,6 +4,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neetcoders.miraculousmanatee.MiraculousManateeMod;
 import net.neetcoders.miraculousmanatee.block.NamedBlockItem;
+import net.neetcoders.miraculousmanatee.item.BlubberBlasterItem;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -19,6 +20,9 @@ public final class ModItems {
 
     public static final DeferredItem<Item> BLUBBER_BLOCK = ITEMS.register("blubber_block",
             () -> new BlockItem(ModBlocks.BLUBBER_BLOCK.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> BLUBBER_BLASTER = ITEMS.register("blubber_blaster",
+            () -> new BlubberBlasterItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> PENGUIN_SPAWN_EGG = ITEMS.register("penguin_spawn_egg",
             () -> new DeferredSpawnEggItem(ModEntities.PENGUIN, 0x3A3F44, 0xEDEBE8, new Item.Properties()));
