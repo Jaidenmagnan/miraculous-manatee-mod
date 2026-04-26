@@ -7,6 +7,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neetcoders.miraculousmanatee.MiraculousManateeMod;
 import net.neetcoders.miraculousmanatee.client.renderer.ManateeRenderer;
 import net.neetcoders.miraculousmanatee.client.renderer.PenguinRenderer;
+import net.neetcoders.miraculousmanatee.config.ModClientConfig;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 
@@ -19,6 +20,8 @@ public final class ClientEventHandlers {
     public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.MANATEE.get(), ManateeRenderer::new);
         event.registerEntityRenderer(ModEntities.PENGUIN.get(), PenguinRenderer::new);
-        event.registerEntityRenderer(ModEntities.BLUBBER_PROJECTILE.get(), ThrownItemRenderer::new);
+        if (ModClientConfig.RENDER_BLUBBER_PROJECTILE.get()) {
+            event.registerEntityRenderer(ModEntities.BLUBBER_PROJECTILE.get(), ThrownItemRenderer::new);
+        }
     }
 }

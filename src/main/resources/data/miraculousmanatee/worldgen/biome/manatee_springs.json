@@ -109,12 +109,6 @@
     "axolotls": [],
     "creature": [
       {
-        "type": "miraculousmanatee:manatee",
-        "maxCount": 5,
-        "minCount": 2,
-        "weight": 45
-      },
-      {
         "type": "minecraft:frog",
         "maxCount": 5,
         "minCount": 2,
