@@ -1,0 +1,70 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.blubber_blaster",
+        "texture_width": 64,
+        "texture_height": 64,
+        "visible_bounds_width": 1.5,
+        "visible_bounds_height": 1.5,
+        "visible_bounds_offset": [0, 0, 0]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [0, 0, 0]
+        },
+        {
+          "name": "barrel",
+          "parent": "root",
+          "pivot": [0, 0, -4],
+          "cubes": [
+            {"origin": [-1.5, -1.5, -10], "size": [3, 3, 12], "uv": [0, 0]}
+          ]
+        },
+        {
+          "name": "body",
+          "parent": "root",
+          "pivot": [0, 0, 1],
+          "cubes": [
+            {"origin": [-3, -3, -2], "size": [6, 6, 7], "uv": [0, 18]}
+          ]
+        },
+        {
+          "name": "grip",
+          "parent": "root",
+          "pivot": [0, -2, 3],
+          "rotation": [-18, 0, 0],
+          "cubes": [
+            {"origin": [-1.25, -9, 2], "size": [2.5, 7, 3], "uv": [30, 0]}
+          ]
+        },
+        {
+          "name": "blubber_tank",
+          "parent": "root",
+          "pivot": [0, 4, 2],
+          "cubes": [
+            {"origin": [-2.5, 3, -1], "size": [5, 3, 6], "uv": [30, 18]}
+          ]
+        },
+        {
+          "name": "muzzle",
+          "parent": "root",
+          "pivot": [0, 0, -10],
+          "cubes": [
+            {"origin": [-2, -2, -12], "size": [4, 4, 2], "uv": [0, 36]}
+          ]
+        },
+        {
+          "name": "trigger",
+          "parent": "root",
+          "pivot": [0, -3, 0],
+          "cubes": [
+            {"origin": [-0.5, -5, -1], "size": [1, 2, 1], "uv": [18, 36]}
+          ]
+        }
+      ]
+    }
+  ]
+}

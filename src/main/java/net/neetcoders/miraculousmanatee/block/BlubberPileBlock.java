@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neetcoders.miraculousmanatee.registry.ModItems;
 import net.neetcoders.miraculousmanatee.registry.ModBlocks;
+import net.neetcoders.miraculousmanatee.registry.ModItems;
 
 public class BlubberPileBlock extends Block {
     public static final IntegerProperty LAYERS = IntegerProperty.create("layers", 1, 8);
@@ -44,10 +44,8 @@ public class BlubberPileBlock extends Block {
     @Override
     public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
         ItemStack held = context.getItemInHand();
-        if (held.is(ModItems.BLUBBER.get()) && state.getValue(LAYERS) <= 8) {
-            return true;
-        }
-        return super.canBeReplaced(state, context);
+        return (held.is(ModItems.BLUBBER.get()) && state.getValue(LAYERS) <= 8)
+                || super.canBeReplaced(state, context);
     }
 
     @Nullable

@@ -4,13 +4,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.neetcoders.miraculousmanatee.MiraculousManateeMod;
+import net.neetcoders.miraculousmanatee.block.BlubberBlock;
+import net.neetcoders.miraculousmanatee.block.BlubberPileBlock;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
-import net.neetcoders.miraculousmanatee.block.BlubberPileBlock;
-import net.neetcoders.miraculousmanatee.block.BlubberBlock;
-
-import net.neetcoders.miraculousmanatee.MiraculousManateeMod;
 
 public final class ModBlocks {
     private ModBlocks() {
