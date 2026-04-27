@@ -23,6 +23,11 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.BLUBBER.get());
                         output.accept(ModItems.BLUBBER_BLOCK.get());
                         output.accept(ModItems.BLUBBER_BLASTER.get());
+                        output.accept(ModItems.LUMINOUS_CATTAIL.get());
+                        output.accept(ModItems.MISTVEIL_FERN.get());
+                        output.accept(ModItems.SPRINGHEART_BLOOM.get());
+                        output.accept(ModItems.AZURE_DEWCAP.get());
+                        output.accept(ModItems.MOONLIT_LOTUS.get());
                         output.accept(ModItems.PENGUIN_SPAWN_EGG.get());
                         output.accept(ModItems.MANATEE_SPAWN_EGG.get());
                     })
