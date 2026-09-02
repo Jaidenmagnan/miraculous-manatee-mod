@@ -1,0 +1,59 @@
+{
+  "type": "minecraft:flower",
+  "config": {
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "data": {
+                  "Name": "miraculousmanatee:luminous_cattail"
+                },
+                "weight": 3
+              },
+              {
+                "data": {
+                  "Name": "miraculousmanatee:mistveil_fern"
+                },
+                "weight": 4
+              },
+              {
+                "data": {
+                  "Name": "miraculousmanatee:springheart_bloom"
+                },
+                "weight": 3
+              },
+              {
+                "data": {
+                  "Name": "miraculousmanatee:azure_dewcap"
+                },
+                "weight": 3
+              },
+              {
+                "data": {
+                  "Name": "miraculousmanatee:moonlit_lotus"
+                },
+                "weight": 2
+              }
+            ]
+          }
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:air"
+          }
+        }
+      ]
+    },
+    "tries": 48,
+    "xz_spread": 6,
+    "y_spread": 2
+  }
+}
