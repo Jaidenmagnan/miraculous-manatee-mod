@@ -24,6 +24,21 @@ public final class ModItems {
     public static final DeferredItem<Item> BLUBBER_BLASTER = ITEMS.register("blubber_blaster",
             () -> new BlubberBlasterItem(new Item.Properties().stacksTo(1)));
 
+    public static final DeferredItem<Item> LUMINOUS_CATTAIL = ITEMS.register("luminous_cattail",
+            () -> new BlockItem(ModBlocks.LUMINOUS_CATTAIL.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> MISTVEIL_FERN = ITEMS.register("mistveil_fern",
+            () -> new BlockItem(ModBlocks.MISTVEIL_FERN.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> SPRINGHEART_BLOOM = ITEMS.register("springheart_bloom",
+            () -> new BlockItem(ModBlocks.SPRINGHEART_BLOOM.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> AZURE_DEWCAP = ITEMS.register("azure_dewcap",
+            () -> new BlockItem(ModBlocks.AZURE_DEWCAP.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> MOONLIT_LOTUS = ITEMS.register("moonlit_lotus",
+            () -> new BlockItem(ModBlocks.MOONLIT_LOTUS.get(), new Item.Properties()));
+
     public static final DeferredItem<Item> PENGUIN_SPAWN_EGG = ITEMS.register("penguin_spawn_egg",
             () -> new DeferredSpawnEggItem(ModEntities.PENGUIN, 0x3A3F44, 0xEDEBE8, new Item.Properties()));
 

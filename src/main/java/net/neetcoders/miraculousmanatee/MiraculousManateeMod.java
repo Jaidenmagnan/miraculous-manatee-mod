@@ -43,5 +43,12 @@ public final class MiraculousManateeMod {
             event.accept(ModItems.BLUBBER);
             event.accept(ModItems.BLUBBER_BLOCK);
         }
+        if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
+            event.accept(ModItems.LUMINOUS_CATTAIL);
+            event.accept(ModItems.MISTVEIL_FERN);
+            event.accept(ModItems.SPRINGHEART_BLOOM);
+            event.accept(ModItems.AZURE_DEWCAP);
+            event.accept(ModItems.MOONLIT_LOTUS);
+        }
     }
 }
