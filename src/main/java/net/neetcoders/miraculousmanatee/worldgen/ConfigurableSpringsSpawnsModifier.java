@@ -41,6 +41,14 @@ public final class ConfigurableSpringsSpawnsModifier implements BiomeModifier {
                     ModServerConfig.penguinMinGroupSize(),
                     ModServerConfig.penguinMaxGroupSize()));
         }
+
+        if (ModServerConfig.EVIL_MANATEE_NATURAL_SPAWN_ENABLED.get()) {
+            builder.getMobSpawnSettings().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(
+                    ModEntities.EVIL_MANATEE.get(),
+                    ModServerConfig.EVIL_MANATEE_SPAWN_WEIGHT.get(),
+                    ModServerConfig.evilManateeMinGroupSize(),
+                    ModServerConfig.evilManateeMaxGroupSize()));
+        }
     }
 
     @Override

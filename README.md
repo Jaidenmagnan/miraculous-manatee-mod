@@ -34,7 +34,7 @@ NeoForge generates mod config files automatically after first launch:
 
 Scope summary
 ----------
-- `SERVER` (world/gameplay): entity natural spawn settings (`manatee.*`, `penguin.*`), blubber blaster cooldown, manatee taming chance
+- `SERVER` (world/gameplay): entity natural spawn settings (`manatee.*`, `penguin.*`), blubber blaster cooldown, manatee taming chance, manatee food/fat (`manateeFood.*`), evil manatee rage and night spawns (`evilManatee.*`)
 - `COMMON` (shared non-visual): troubleshooting/logging toggle
 - `CLIENT` (visual-only): blubber projectile rendering toggle
 

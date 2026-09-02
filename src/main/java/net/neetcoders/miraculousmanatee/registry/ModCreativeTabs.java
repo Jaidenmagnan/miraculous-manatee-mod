@@ -25,6 +25,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.BLUBBER_BLASTER.get());
                         output.accept(ModItems.PENGUIN_SPAWN_EGG.get());
                         output.accept(ModItems.MANATEE_SPAWN_EGG.get());
+                        output.accept(ModItems.EVIL_MANATEE_SPAWN_EGG.get());
                     })
                     .build());
 }
