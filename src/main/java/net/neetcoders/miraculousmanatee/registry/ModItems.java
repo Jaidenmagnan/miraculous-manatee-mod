@@ -44,4 +44,7 @@ public final class ModItems {
 
     public static final DeferredItem<Item> MANATEE_SPAWN_EGG = ITEMS.register("manatee_spawn_egg",
             () -> new DeferredSpawnEggItem(ModEntities.MANATEE, 0x6B7D86, 0xD8D2C2, new Item.Properties()));
+
+    public static final DeferredItem<Item> EVIL_MANATEE_SPAWN_EGG = ITEMS.register("evil_manatee_spawn_egg",
+            () -> new DeferredSpawnEggItem(ModEntities.EVIL_MANATEE, 0x1F1B2E, 0xE01010, new Item.Properties()));
 }

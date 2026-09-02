@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neetcoders.miraculousmanatee.MiraculousManateeMod;
 import net.neetcoders.miraculousmanatee.entity.BlubberProjectile;
+import net.neetcoders.miraculousmanatee.entity.EvilManatee;
 import net.neetcoders.miraculousmanatee.entity.Manatee;
 import net.neetcoders.miraculousmanatee.entity.Penguin;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -21,6 +22,11 @@ public final class ModEntities {
             .register("manatee", () -> EntityType.Builder.of(Manatee::new, MobCategory.WATER_CREATURE)
                     .sized(1.8f, 0.9f)
                     .build("manatee"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EvilManatee>> EVIL_MANATEE = ENTITY_TYPES
+            .register("evil_manatee", () -> EntityType.Builder.of(EvilManatee::new, MobCategory.MONSTER)
+                    .sized(1.8f, 0.9f)
+                    .build("evil_manatee"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<Penguin>> PENGUIN = ENTITY_TYPES
             .register("penguin", () -> EntityType.Builder.of(Penguin::new, MobCategory.CREATURE)

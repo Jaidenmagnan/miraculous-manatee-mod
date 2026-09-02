@@ -9,8 +9,8 @@
   "downfall": 0.95,
   "effects": {
     "fog_color": 12638463,
-    "foliage_color": 7587183,
-    "grass_color": 8179016,
+    "foliage_color": 5877296,
+    "grass_color": 7979098,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -21,17 +21,17 @@
       "max_delay": 24000,
       "min_delay": 12000,
       "replace_current_music": false,
-      "sound": "minecraft:music.overworld.swamp"
+      "sound": "minecraft:music.overworld.cherry_grove"
     },
-    "sky_color": 7972607,
-    "water_color": 3528424,
-    "water_fog_color": 7727858
+    "sky_color": 7907327,
+    "water_color": 5232614,
+    "water_fog_color": 9429998
   },
   "features": [
     [],
     [
       "minecraft:lake_lava_underground",
-      "minecraft:lake_lava_surface"
+      "miraculousmanatee:spring_pool"
     ],
     [
       "minecraft:amethyst_geode"
@@ -71,8 +71,9 @@
       "minecraft:ore_lapis_buried",
       "minecraft:ore_copper",
       "minecraft:underwater_magma",
-      "minecraft:disk_grass",
-      "minecraft:disk_clay"
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel"
     ],
     [],
     [
@@ -81,13 +82,12 @@
     ],
     [
       "minecraft:glow_lichen",
+      "minecraft:patch_tall_grass_2",
       "miraculousmanatee:trees_manatee_springs",
       "minecraft:flower_swamp",
       "miraculousmanatee:magical_spring_plants",
       "minecraft:patch_grass_normal",
       "minecraft:patch_waterlily",
-      "minecraft:brown_mushroom_swamp",
-      "minecraft:red_mushroom_swamp",
       "minecraft:patch_sugar_cane_swamp",
       "minecraft:seagrass_swamp",
       "miraculousmanatee:dense_kelp"
@@ -107,7 +107,14 @@
         "weight": 10
       }
     ],
-    "axolotls": [],
+    "axolotls": [
+      {
+        "type": "minecraft:axolotl",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 10
+      }
+    ],
     "creature": [
       {
         "type": "minecraft:frog",
@@ -149,28 +156,10 @@
         "weight": 100
       },
       {
-        "type": "minecraft:slime",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 100
-      },
-      {
         "type": "minecraft:enderman",
         "maxCount": 4,
         "minCount": 1,
         "weight": 10
-      },
-      {
-        "type": "minecraft:witch",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 5
-      },
-      {
-        "type": "minecraft:bogged",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 20
       }
     ],
     "underground_water_creature": [
