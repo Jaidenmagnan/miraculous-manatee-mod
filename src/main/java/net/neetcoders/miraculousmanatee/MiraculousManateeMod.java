@@ -1,6 +1,6 @@
 package net.neetcoders.miraculousmanatee;
 
-import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.resources.ResourceLocation;
 import net.neetcoders.miraculousmanatee.client.ClientConfigScreenHooks;
 import net.neetcoders.miraculousmanatee.config.ModClientConfig;
 import net.neetcoders.miraculousmanatee.config.ModCommonConfig;
@@ -15,40 +15,32 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
+/**
+ * Mod entry point. Wires the deferred registers and configs; everything else lives in the package that owns it
+ * ({@code registry}, {@code entity}, {@code worldgen}, {@code client}, {@code config}).
+ */
 @Mod(MiraculousManateeMod.MOD_ID)
 public final class MiraculousManateeMod {
     public static final String MOD_ID = "miraculousmanatee";
 
     public MiraculousManateeMod(IEventBus modEventBus, ModContainer modContainer) {
-        ModEntities.ENTITY_TYPES.register(modEventBus);
-        ModItems.ITEMS.register(modEventBus);
-        ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
+        ModEntities.ENTITY_TYPES.register(modEventBus);
+        ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+        ModWorldgen.register(modEventBus);
+
         modContainer.registerConfig(ModConfig.Type.SERVER, ModServerConfig.SPEC);
         modContainer.registerConfig(ModConfig.Type.COMMON, ModCommonConfig.SPEC);
         modContainer.registerConfig(ModConfig.Type.CLIENT, ModClientConfig.SPEC);
         if (FMLEnvironment.dist.isClient()) {
             ClientConfigScreenHooks.register(modContainer);
         }
-
-        ModWorldgen.register(modEventBus);
-
-        modEventBus.addListener(this::addCreative);
     }
 
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(ModItems.BLUBBER);
-            event.accept(ModItems.BLUBBER_BLOCK);
-        }
-        if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
-            event.accept(ModItems.LUMINOUS_CATTAIL);
-            event.accept(ModItems.MISTVEIL_FERN);
-            event.accept(ModItems.SPRINGHEART_BLOOM);
-            event.accept(ModItems.AZURE_DEWCAP);
-            event.accept(ModItems.MOONLIT_LOTUS);
-        }
+    /** Builds a {@link ResourceLocation} in this mod's namespace, e.g. {@code miraculousmanatee:manatee}. */
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 }

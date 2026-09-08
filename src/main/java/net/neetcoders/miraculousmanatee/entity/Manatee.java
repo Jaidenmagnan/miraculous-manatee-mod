@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,6 +20,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
@@ -67,6 +69,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class Manatee extends TamableAnimal implements GeoEntity {
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(Items.KELP);
     private static final String INVENTORY_TAG = "Inventory";
+    /** Belly slots. Must stay 27: the belly opens as a {@link ChestMenu#threeRows} menu. */
+    private static final int INVENTORY_SIZE = 27;
     private static final String FAT_TAG = "Fat";
     private static final Component INVENTORY_TITLE = Component.literal("Manatee's Belly");
 
@@ -82,8 +86,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     /** Each point of fat grows the manatee by this fraction of its base scale (1% per point). */
     private static final double FAT_SCALE_PER_POINT = 0.01D;
-    private static final ResourceLocation FAT_SCALE_MODIFIER_ID = ResourceLocation
-            .fromNamespaceAndPath(MiraculousManateeMod.MOD_ID, "fat_scale");
+    private static final ResourceLocation FAT_SCALE_MODIFIER_ID = MiraculousManateeMod.id("fat_scale");
 
     // ---------------------------------------------------------------------------------------------
     // Movement tuning. These feed the swimming move control below; tweak them in-game if the manatee
@@ -105,7 +108,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
     private static final double IDLE_SINK_PER_TICK = 0.002D;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private final SimpleContainer inventory = new SimpleContainer(27);
+    private final SimpleContainer inventory = new SimpleContainer(INVENTORY_SIZE);
 
     /*
      * =============================================================================================
@@ -147,7 +150,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "swim_controller", 5, this::handle));
+        controllers.add(new AnimationController<>(this, "swim_controller", 5, this::selectAnimation));
     }
 
     @Override
@@ -261,10 +264,10 @@ public class Manatee extends TamableAnimal implements GeoEntity {
 
     @Override
     public boolean isFood(@NotNull ItemStack itemStack) {
-        return itemStack.is(Items.KELP);
+        return TEMPTATION_ITEMS.test(itemStack);
     }
 
-    private PlayState handle(AnimationState<Manatee> state) {
+    private PlayState selectAnimation(AnimationState<Manatee> state) {
         if (this.isInSittingPose()) {
             return state.setAndContinue(RawAnimation.begin().thenLoop("animation.manatee.sit"));
         }
@@ -368,7 +371,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains(INVENTORY_TAG)) {
-            inventory.fromTag(tag.getList(INVENTORY_TAG, 10), this.registryAccess());
+            inventory.fromTag(tag.getList(INVENTORY_TAG, Tag.TAG_COMPOUND), this.registryAccess());
         }
         setFat(tag.getInt(FAT_TAG));
     }
@@ -383,23 +386,23 @@ public class Manatee extends TamableAnimal implements GeoEntity {
         ItemStack heldItem = player.getItemInHand(hand);
 
         if (!this.level().isClientSide()) {
-            if (!this.isTame() && TEMPTATION_ITEMS.test(heldItem)) {
+            if (!this.isTame() && this.isFood(heldItem)) {
                 if (!player.getAbilities().instabuild) {
                     heldItem.shrink(1);
                 }
                 if (this.random.nextInt(ModServerConfig.MANATEE_TAMING_CHANCE_DENOMINATOR.get()) == 0) {
                     this.tame(player);
                     this.setOrderedToSit(true);
-                    this.level().broadcastEntityEvent(this, (byte) 7);
+                    this.level().broadcastEntityEvent(this, EntityEvent.TAMING_SUCCEEDED);
                 } else {
-                    this.level().broadcastEntityEvent(this, (byte) 6);
+                    this.level().broadcastEntityEvent(this, EntityEvent.TAMING_FAILED);
                 }
                 return InteractionResult.SUCCESS;
             }
 
             if (this.isTame() && this.isOwnedBy(player)) {
                 // Hand feeding: a tamed manatee accepts kelp from its owner until it is full.
-                if (TEMPTATION_ITEMS.test(heldItem) && !this.isFull()) {
+                if (this.isFood(heldItem) && !this.isFull()) {
                     this.usePlayerItem(player, hand, heldItem);
                     this.onAte();
                     return InteractionResult.SUCCESS;
@@ -428,16 +431,7 @@ public class Manatee extends TamableAnimal implements GeoEntity {
     }
 
     public boolean canStoreBlubber() {
-        ItemStack blubber = new ItemStack(ModItems.BLUBBER.get());
-        for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
-            ItemStack itemStack = inventory.getItem(slot);
-            if (itemStack.isEmpty() || (ItemStack.isSameItemSameComponents(itemStack, blubber)
-                    && itemStack.getCount() < itemStack.getMaxStackSize())) {
-                return true;
-            }
-        }
-
-        return false;
+        return inventory.canAddItem(new ItemStack(ModItems.BLUBBER.get()));
     }
 
     public boolean addBlubberToBelly() {

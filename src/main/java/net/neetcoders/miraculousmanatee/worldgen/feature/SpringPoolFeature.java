@@ -6,6 +6,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -111,19 +112,19 @@ public class SpringPoolFeature extends Feature<NoneFeatureConfiguration> {
         boolean vent = distSqr <= 1;
 
         pos.set(x, floorY, z);
-        level.setBlock(pos, vent ? Blocks.SOUL_SAND.defaultBlockState() : floorBlock(random), 2);
+        level.setBlock(pos, vent ? Blocks.SOUL_SAND.defaultBlockState() : floorBlock(random), Block.UPDATE_CLIENTS);
 
         // Seal beneath the floor so a cave underneath does not drain the pool.
         pos.set(x, floorY - 1, z);
         if (!level.getBlockState(pos).isSolid()) {
-            level.setBlock(pos, Blocks.STONE.defaultBlockState(), 2);
+            level.setBlock(pos, Blocks.STONE.defaultBlockState(), Block.UPDATE_CLIENTS);
         }
 
         BlockState water = Blocks.WATER.defaultBlockState();
         BlockState bubbles = Blocks.BUBBLE_COLUMN.defaultBlockState().setValue(BubbleColumnBlock.DRAG_DOWN, false);
         for (int y = floorY + 1; y <= rimY; y++) {
             pos.set(x, y, z);
-            level.setBlock(pos, vent ? bubbles : water, 2);
+            level.setBlock(pos, vent ? bubbles : water, Block.UPDATE_CLIENTS);
         }
     }
 
@@ -132,13 +133,13 @@ public class SpringPoolFeature extends Feature<NoneFeatureConfiguration> {
         pos.set(x, rimY, z);
         BlockState rim = random.nextFloat() < 0.6F ? Blocks.MOSSY_COBBLESTONE.defaultBlockState()
                 : Blocks.MOSS_BLOCK.defaultBlockState();
-        level.setBlock(pos, rim, 2);
+        level.setBlock(pos, rim, Block.UPDATE_CLIENTS);
 
         // Wall the outside of the bowl below the rim so water cannot leak sideways into caves or hollows.
         for (int y = rimY - depth - 1; y < rimY; y++) {
             pos.set(x, y, z);
             if (!level.getBlockState(pos).isSolid()) {
-                level.setBlock(pos, Blocks.STONE.defaultBlockState(), 2);
+                level.setBlock(pos, Blocks.STONE.defaultBlockState(), Block.UPDATE_CLIENTS);
             }
         }
     }
@@ -160,7 +161,7 @@ public class SpringPoolFeature extends Feature<NoneFeatureConfiguration> {
             pos.set(x, y, z);
             BlockState state = level.getBlockState(pos);
             if (!state.isAir() && (state.is(BlockTags.REPLACEABLE) || state.is(BlockTags.LEAVES))) {
-                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
             }
         }
     }

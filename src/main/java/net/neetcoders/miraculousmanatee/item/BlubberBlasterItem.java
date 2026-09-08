@@ -47,7 +47,6 @@ public class BlubberBlasterItem extends Item implements GeoItem {
 
         if (!level.isClientSide()) {
             BlubberProjectile projectile = new BlubberProjectile(level, player);
-            projectile.setItem(new ItemStack(ModItems.BLUBBER.get()));
             projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, PROJECTILE_VELOCITY,
                     PROJECTILE_INACCURACY);
             level.addFreshEntity(projectile);
