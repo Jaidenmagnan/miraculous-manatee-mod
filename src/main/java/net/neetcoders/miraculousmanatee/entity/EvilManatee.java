@@ -55,7 +55,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  * </ul>
  */
 public class EvilManatee extends Monster implements GeoEntity {
-    /** Ticks of Speed II / Jump Boost II granted by a rage. */
+    /** Potion amplifier for the rage effects (1 = Speed II / Jump Boost II). */
     private static final int RAGE_EFFECT_AMPLIFIER = 1;
     /** While chasing on land, 1-in-N chance per tick to hop (roughly one hop per half second). */
     private static final int HOP_CHANCE = 6;
@@ -98,7 +98,7 @@ public class EvilManatee extends Monster implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "move_controller", 5, this::handle));
+        controllers.add(new AnimationController<>(this, "move_controller", 5, this::selectAnimation));
     }
 
     @Override
@@ -106,7 +106,7 @@ public class EvilManatee extends Monster implements GeoEntity {
         return cache;
     }
 
-    private PlayState handle(AnimationState<EvilManatee> state) {
+    private PlayState selectAnimation(AnimationState<EvilManatee> state) {
         if (state.isMoving()) {
             return state.setAndContinue(RawAnimation.begin().thenLoop("animation.manatee.swim"));
         }

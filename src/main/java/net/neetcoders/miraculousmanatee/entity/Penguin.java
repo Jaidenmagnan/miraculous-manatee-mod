@@ -1,5 +1,6 @@
 package net.neetcoders.miraculousmanatee.entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -80,7 +81,7 @@ public class Penguin extends Animal implements GeoEntity {
     }
 
     public static boolean checkPenguinSpawnRules(EntityType<Penguin> entityType, LevelAccessor level,
-            MobSpawnType spawnType, net.minecraft.core.BlockPos pos, RandomSource random) {
+            MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON);
     }
 }

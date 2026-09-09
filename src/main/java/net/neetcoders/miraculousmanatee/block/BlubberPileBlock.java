@@ -1,9 +1,6 @@
 package net.neetcoders.miraculousmanatee.block;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
@@ -15,25 +12,30 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neetcoders.miraculousmanatee.registry.ModBlocks;
 import net.neetcoders.miraculousmanatee.registry.ModItems;
+import org.jetbrains.annotations.Nullable;
 
+/**
+ * A snow-layer style pile of blubber. Placing more blubber on a pile adds a layer; adding to a full pile of
+ * {@value #MAX_LAYERS} layers turns it into a solid {@link BlubberBlock}.
+ */
 public class BlubberPileBlock extends Block {
-    public static final IntegerProperty LAYERS = IntegerProperty.create("layers", 1, 8);
+    public static final int MAX_LAYERS = 8;
+    public static final IntegerProperty LAYERS = IntegerProperty.create("layers", 1, MAX_LAYERS);
 
-    private static final VoxelShape[] SHAPES = new VoxelShape[] {
-            Block.box(0, 0, 0, 16, 0, 16),
-            Block.box(0, 0, 0, 16, 2, 16),
-            Block.box(0, 0, 0, 16, 4, 16),
-            Block.box(0, 0, 0, 16, 6, 16),
-            Block.box(0, 0, 0, 16, 8, 16),
-            Block.box(0, 0, 0, 16, 10, 16),
-            Block.box(0, 0, 0, 16, 12, 16),
-            Block.box(0, 0, 0, 16, 14, 16),
-            Block.box(0, 0, 0, 16, 16, 16)
-    };
+    /** Indexed by layer count; each layer is two pixels tall. Index 0 is never used but keeps the lookup direct. */
+    private static final VoxelShape[] SHAPES = buildShapes();
 
     public BlubberPileBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(LAYERS, 1));
+    }
+
+    private static VoxelShape[] buildShapes() {
+        VoxelShape[] shapes = new VoxelShape[MAX_LAYERS + 1];
+        for (int layers = 0; layers <= MAX_LAYERS; layers++) {
+            shapes[layers] = Block.box(0, 0, 0, 16, layers * 2, 16);
+        }
+        return shapes;
     }
 
     @Override
@@ -41,11 +43,10 @@ public class BlubberPileBlock extends Block {
         builder.add(LAYERS);
     }
 
+    /** Blubber can always be placed "into" a pile: it either adds a layer or upgrades a full pile to a block. */
     @Override
     public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
-        ItemStack held = context.getItemInHand();
-        return (held.is(ModItems.BLUBBER.get()) && state.getValue(LAYERS) <= 8)
-                || super.canBeReplaced(state, context);
+        return context.getItemInHand().is(ModItems.BLUBBER.get()) || super.canBeReplaced(state, context);
     }
 
     @Nullable
@@ -54,7 +55,7 @@ public class BlubberPileBlock extends Block {
         BlockState clicked = context.getLevel().getBlockState(context.getClickedPos());
         if (clicked.is(this)) {
             int layers = clicked.getValue(LAYERS);
-            if (layers >= 8) {
+            if (layers >= MAX_LAYERS) {
                 return ModBlocks.BLUBBER_BLOCK.get().defaultBlockState();
             }
             return clicked.setValue(LAYERS, layers + 1);
@@ -69,7 +70,6 @@ public class BlubberPileBlock extends Block {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        BlockPos below = pos.below();
-        return Block.canSupportRigidBlock(level, below);
+        return Block.canSupportRigidBlock(level, pos.below());
     }
 }

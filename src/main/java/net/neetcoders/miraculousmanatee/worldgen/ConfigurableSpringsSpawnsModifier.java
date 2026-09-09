@@ -2,14 +2,21 @@ package net.neetcoders.miraculousmanatee.worldgen;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.neetcoders.miraculousmanatee.config.ModServerConfig;
+import net.neetcoders.miraculousmanatee.config.ModServerConfig.SpawnConfig;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
 
+/**
+ * Adds the mod's natural spawns to Manatee Springs from the server config, so weights and group sizes can be
+ * tuned without a datapack. Attached to the biome by
+ * {@code data/miraculousmanatee/neoforge/biome_modifier/configurable_springs_spawns.json}.
+ */
 public final class ConfigurableSpringsSpawnsModifier implements BiomeModifier {
     public static final ConfigurableSpringsSpawnsModifier INSTANCE = new ConfigurableSpringsSpawnsModifier();
 
@@ -18,37 +25,21 @@ public final class ConfigurableSpringsSpawnsModifier implements BiomeModifier {
 
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
-        boolean isManateeSprings = biome.is(ModBiomes.MANATEE_SPRINGS)
-                || biome.unwrapKey()
-                        .map(key -> key.location().equals(ModBiomes.MANATEE_SPRINGS.location()))
-                        .orElse(false);
-        if (phase != Phase.ADD || !isManateeSprings) {
+        if (phase != Phase.ADD || !biome.is(ModBiomes.MANATEE_SPRINGS)) {
             return;
         }
+        addSpawn(builder, MobCategory.WATER_CREATURE, ModEntities.MANATEE.get(), ModServerConfig.MANATEE_SPAWN);
+        addSpawn(builder, MobCategory.CREATURE, ModEntities.PENGUIN.get(), ModServerConfig.PENGUIN_SPAWN);
+        addSpawn(builder, MobCategory.MONSTER, ModEntities.EVIL_MANATEE.get(), ModServerConfig.EVIL_MANATEE_SPAWN);
+    }
 
-        if (ModServerConfig.MANATEE_NATURAL_SPAWN_ENABLED.get()) {
-            builder.getMobSpawnSettings().addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(
-                    ModEntities.MANATEE.get(),
-                    ModServerConfig.MANATEE_SPAWN_WEIGHT.get(),
-                    ModServerConfig.manateeMinGroupSize(),
-                    ModServerConfig.manateeMaxGroupSize()));
+    private static void addSpawn(ModifiableBiomeInfo.BiomeInfo.Builder builder, MobCategory category,
+            EntityType<?> entityType, SpawnConfig config) {
+        if (!config.isEnabled()) {
+            return;
         }
-
-        if (ModServerConfig.PENGUIN_NATURAL_SPAWN_ENABLED.get()) {
-            builder.getMobSpawnSettings().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(
-                    ModEntities.PENGUIN.get(),
-                    ModServerConfig.PENGUIN_SPAWN_WEIGHT.get(),
-                    ModServerConfig.penguinMinGroupSize(),
-                    ModServerConfig.penguinMaxGroupSize()));
-        }
-
-        if (ModServerConfig.EVIL_MANATEE_NATURAL_SPAWN_ENABLED.get()) {
-            builder.getMobSpawnSettings().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(
-                    ModEntities.EVIL_MANATEE.get(),
-                    ModServerConfig.EVIL_MANATEE_SPAWN_WEIGHT.get(),
-                    ModServerConfig.evilManateeMinGroupSize(),
-                    ModServerConfig.evilManateeMaxGroupSize()));
-        }
+        builder.getMobSpawnSettings().addSpawn(category, new MobSpawnSettings.SpawnerData(
+                entityType, config.weight(), config.minGroupSize(), config.maxGroupSize()));
     }
 
     @Override
