@@ -11,6 +11,9 @@ import net.minecraft.world.level.material.MapColor;
 import net.neetcoders.miraculousmanatee.MiraculousManateeMod;
 import net.neetcoders.miraculousmanatee.block.BlubberBlock;
 import net.neetcoders.miraculousmanatee.block.BlubberPileBlock;
+import net.neetcoders.miraculousmanatee.block.ManateeHeadBlock;
+import net.neetcoders.miraculousmanatee.block.ManateePortalAltarBlock;
+import net.neetcoders.miraculousmanatee.block.ManateePortalBlock;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -37,6 +40,22 @@ public final class ModBlocks {
             MobEffects.WATER_BREATHING, 6.0f, MapColor.COLOR_LIGHT_BLUE);
     public static final DeferredBlock<FlowerBlock> MOONLIT_LOTUS = registerSpringPlant("moonlit_lotus",
             MobEffects.LUCK, 6.0f, MapColor.TERRACOTTA_WHITE);
+
+    /** Keystone of the manatee portal frame; has a block item ({@code ModItems.MANATEE_PORTAL_ALTAR}). */
+    public static final DeferredBlock<ManateePortalAltarBlock> MANATEE_PORTAL_ALTAR = BLOCKS.registerBlock(
+            "manatee_portal_altar", ManateePortalAltarBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_PRISMARINE)
+                    .lightLevel(state -> 7));
+    /** The portal's interior block, placed by {@code ManateePortalShape}. Deliberately has no block item; it is never obtained as an item. */
+    public static final DeferredBlock<ManateePortalBlock> MANATEE_PORTAL = BLOCKS.registerBlock("manatee_portal",
+            ManateePortalBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_PORTAL).noLootTable());
+
+    /** Decorative manatee head; three of them crown the Elder Manatee summoning ritual. */
+    public static final DeferredBlock<ManateeHeadBlock> MANATEE_HEAD = BLOCKS.registerBlock("manatee_head",
+            ManateeHeadBlock::new, BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(1.0F)
+                    .sound(SoundType.WOOL)
+                    .noOcclusion());
 
     private ModBlocks() {
     }

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "miraculousmanatee:block/manatee_portal_ns"
+    },
+    "axis=z": {
+      "model": "miraculousmanatee:block/manatee_portal_ew"
+    }
+  }
+}

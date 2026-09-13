@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/nether_portal_ew",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "particle": "miraculousmanatee:block/manatee_portal",
+    "portal": "miraculousmanatee:block/manatee_portal"
+  }
+}

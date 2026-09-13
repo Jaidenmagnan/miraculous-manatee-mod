@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "miraculousmanatee:item/elder_manatee_key_piece"
+  }
+}

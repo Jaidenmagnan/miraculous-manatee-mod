@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "PBP",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:prismarine"
+    },
+    "B": {
+      "item": "miraculousmanatee:blubber_block"
+    }
+  },
+  "result": {
+    "id": "miraculousmanatee:manatee_portal_altar",
+    "count": 1
+  }
+}

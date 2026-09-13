@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "miraculousmanatee:block/manatee_head" },
+    "facing=east": { "model": "miraculousmanatee:block/manatee_head", "y": 90 },
+    "facing=south": { "model": "miraculousmanatee:block/manatee_head", "y": 180 },
+    "facing=west": { "model": "miraculousmanatee:block/manatee_head", "y": 270 }
+  }
+}

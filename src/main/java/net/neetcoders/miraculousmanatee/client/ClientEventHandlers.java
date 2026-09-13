@@ -2,6 +2,7 @@ package net.neetcoders.miraculousmanatee.client;
 
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.neetcoders.miraculousmanatee.MiraculousManateeMod;
+import net.neetcoders.miraculousmanatee.client.renderer.ElderManateeRenderer;
 import net.neetcoders.miraculousmanatee.client.renderer.EvilManateeRenderer;
 import net.neetcoders.miraculousmanatee.client.renderer.ManateeRenderer;
 import net.neetcoders.miraculousmanatee.client.renderer.PenguinRenderer;
@@ -22,6 +23,7 @@ public final class ClientEventHandlers {
         event.registerEntityRenderer(ModEntities.MANATEE.get(), ManateeRenderer::new);
         event.registerEntityRenderer(ModEntities.PENGUIN.get(), PenguinRenderer::new);
         event.registerEntityRenderer(ModEntities.EVIL_MANATEE.get(), EvilManateeRenderer::new);
+        event.registerEntityRenderer(ModEntities.ELDER_MANATEE.get(), ElderManateeRenderer::new);
         if (ModClientConfig.RENDER_BLUBBER_PROJECTILE.get()) {
             event.registerEntityRenderer(ModEntities.BLUBBER_PROJECTILE.get(), ThrownItemRenderer::new);
         }

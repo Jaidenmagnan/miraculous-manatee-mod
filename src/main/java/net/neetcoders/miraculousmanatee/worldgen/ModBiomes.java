@@ -10,6 +10,10 @@ public final class ModBiomes {
     public static final ResourceKey<Biome> MANATEE_SPRINGS = ResourceKey.create(Registries.BIOME,
             MiraculousManateeMod.id("manatee_springs"));
 
+    /** Defined in {@code data/miraculousmanatee/worldgen/biome/manatee_plains.json}. */
+    public static final ResourceKey<Biome> MANATEE_PLAINS = ResourceKey.create(Registries.BIOME,
+            MiraculousManateeMod.id("manatee_plains"));
+
     private ModBiomes() {
     }
 }

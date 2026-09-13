@@ -1,6 +1,7 @@
 # Miraculous Manatee Mod
 
-A NeoForge mod for Minecraft 1.21 that adds manatees, penguins, an evil manatee that hunts at night, and the
+A NeoForge mod for Minecraft 1.21 that adds manatees, penguins, an evil manatee that hunts at night, an Elder
+Manatee boss, a key-and-portal progression loop into its own dimension, and the
 **Manatee Springs** biome (a swamp replacement with clear spring pools, kelp beds and magical plants).
 
 - **Manatee**: tame it with kelp, then it grazes kelp and lily pads on its own, gets visibly fatter, and stores
@@ -8,6 +9,17 @@ A NeoForge mod for Minecraft 1.21 that adds manatees, penguins, an evil manatee 
 - **Blubber**: the manatee's drop. Stack it into piles and blocks, or fire it from the blubber blaster.
 - **Evil manatee**: a monster that walks and swims after players, hops, and occasionally rages.
 - **Penguin**: a passive land animal that follows fish.
+- **Elder Manatee**: a summoned boss with a boss bar, a tidal slam that damages, knocks back and slows
+  everything nearby, and a one-shot summon of two evil manatees at half health.
+- **Summoning ritual**: manatees and evil manatees drop a **Manatee Head** 25% of the time. Build a T out of
+  four blubber blocks - three in a row with one below the middle - and crown the top row with three manatee
+  heads. Placing the last head summons the Elder Manatee, wither-style. The T works in any orientation, and
+  the ritual will not fire on Peaceful.
+- **Manatee Key**: each of the three manatee kinds drops a key piece; craft the three together into a Manatee
+  Key, use it on a Manatee Portal Altar (8 prismarine around a blubber block) and a prismarine portal frame
+  rises around the altar.
+- **Manatee Dimension**: step through the portal into an ocean-block world of prismarine, sand and sea
+  lanterns, populated by manatees, evil manatees and drowned.
 
 ## Building and running
 
@@ -44,10 +56,10 @@ normal releases are uploaded as release files. GeckoLib and TerraBlender are dec
 ```
 src/main/java/net/neetcoders/miraculousmanatee/
   MiraculousManateeMod   entry point: wires registers and configs, provides id(path)
-  registry/              ModBlocks, ModItems, ModEntities, ModCreativeTabs, ModEventHandlers
-  entity/                Manatee, EvilManatee, Penguin, BlubberProjectile, entity/goal/ AI goals
-  block/, item/          block and item classes
-  worldgen/              biome key, TerraBlender region + surface rules, spring pool feature, config-driven spawns
+  registry/              ModBlocks, ModItems, ModEntities, ModPoiTypes, ModCreativeTabs, ModEventHandlers
+  entity/                Manatee, EvilManatee, ElderManatee, ElderManateeSummoning, Penguin, BlubberProjectile, entity/goal/ AI goals
+  block/, item/          block and item classes; block/portal/ holds the frame layout and travel logic
+  worldgen/              biome + dimension keys, TerraBlender region + surface rules, spring pool feature, config-driven spawns
   config/                ModServerConfig / ModCommonConfig / ModClientConfig (NeoForge ModConfigSpec)
   client/                renderers and client-only event handlers (never referenced from common code)
 
@@ -59,6 +71,8 @@ src/main/resources/
     blockstates/, models/, lang/en_us.json
   data/miraculousmanatee/worldgen/                                  biome, configured/placed features
   data/miraculousmanatee/neoforge/biome_modifier/                   attaches ConfigurableSpringsSpawnsModifier
+  data/miraculousmanatee/loot_table/, recipe/                       entity + block drops, crafting recipes
+  data/miraculousmanatee/dimension/, dimension_type/, worldgen/noise_settings/   the Manatee Dimension
 blockbench/                                                         Blockbench source projects (not shipped)
 ```
 
@@ -73,7 +87,9 @@ entity `foo` needs `geo/entity/foo.geo.json`, `textures/entity/foo.png` and
 2. **Entity**: entity class in `entity/`, register the type in `ModEntities`, attributes and spawn placement in
    `ModEventHandlers`, renderer in `client/renderer/` registered from `ClientEventHandlers`, spawn egg in
    `ModItems`, assets as above.
-3. **Config option**: add it to the matching `Mod*Config` class and a `config.miraculousmanatee.*` plus
+3. **Loot/recipe**: add JSON under `data/miraculousmanatee/loot_table/` (entity tables are named after the
+   registry name) or `data/miraculousmanatee/recipe/`. No datagen; these are hand-written.
+4. **Config option**: add it to the matching `Mod*Config` class and a `config.miraculousmanatee.*` plus
    `miraculousmanatee.configuration.*` entry in `en_us.json`. Never rename existing keys: that silently
    resets users' config files.
 
@@ -84,7 +100,7 @@ Config) that edits the same TOML values.
 
 | File | Scope | Contents |
 | --- | --- | --- |
-| `serverconfig/miraculousmanatee-server.toml` (per world) | gameplay | natural spawns per mob (`manatee.*`, `penguin.*`, `evilManatee.*`), blubber blaster cooldown, taming chance, manatee fat/grazing, evil manatee rage |
+| `serverconfig/miraculousmanatee-server.toml` (per world) | gameplay | natural spawns per mob (`manatee.*`, `penguin.*`, `evilManatee.*`), blubber blaster cooldown, taming chance, manatee fat/grazing, evil manatee rage, elder manatee tidal slam (`elderManatee.slamCooldownTicks`, `elderManatee.slamDamage`) |
 | `config/miraculousmanatee-common.toml` | shared, non-visual | verbose logging toggle (reserved, unused) |
 | `config/miraculousmanatee-client.toml` | visual only | render blubber projectiles |
 

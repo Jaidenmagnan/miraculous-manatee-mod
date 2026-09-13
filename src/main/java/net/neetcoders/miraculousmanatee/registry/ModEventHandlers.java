@@ -4,6 +4,7 @@ import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neetcoders.miraculousmanatee.MiraculousManateeMod;
+import net.neetcoders.miraculousmanatee.entity.ElderManatee;
 import net.neetcoders.miraculousmanatee.entity.EvilManatee;
 import net.neetcoders.miraculousmanatee.entity.Manatee;
 import net.neetcoders.miraculousmanatee.entity.Penguin;
@@ -36,6 +37,7 @@ public final class ModEventHandlers {
         event.put(ModEntities.MANATEE.get(), Manatee.createAttributes().build());
         event.put(ModEntities.PENGUIN.get(), Penguin.createAttributes().build());
         event.put(ModEntities.EVIL_MANATEE.get(), EvilManatee.createAttributes().build());
+        event.put(ModEntities.ELDER_MANATEE.get(), ElderManatee.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -52,6 +54,7 @@ public final class ModEventHandlers {
         event.register(ModEntities.EVIL_MANATEE.get(), SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // The elder manatee is deliberately spawn-egg only: no natural spawn placement is registered for it.
     }
 
     @SubscribeEvent
