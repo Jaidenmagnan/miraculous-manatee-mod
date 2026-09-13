@@ -1,0 +1,134 @@
+name: Publish to CurseForge
+
+on:
+  release:
+    types: [published]
+
+concurrency:
+  group: curseforge-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    environment: curseforge
+    env:
+      CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID }}
+      CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
+      RELEASE_NAME: ${{ github.event.release.name }}
+      RELEASE_NOTES: ${{ github.event.release.body }}
+      RELEASE_IS_PRERELEASE: ${{ github.event.release.prerelease }}
+
+    steps:
+      - name: Checkout release
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Validate release configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "$CURSEFORGE_PROJECT_ID" ]]; then
+            echo "Missing repository variable CURSEFORGE_PROJECT_ID" >&2
+            exit 1
+          fi
+          if [[ ! "$CURSEFORGE_PROJECT_ID" =~ ^[0-9]+$ ]]; then
+            echo "CURSEFORGE_PROJECT_ID must be numeric" >&2
+            exit 1
+          fi
+          if [[ -z "$CURSEFORGE_API_TOKEN" ]]; then
+            echo "Missing repository secret CURSEFORGE_API_TOKEN" >&2
+            exit 1
+          fi
+
+          expected_version="${GITHUB_REF_NAME#v}"
+          actual_version="$(sed -n 's/^mod_version=//p' gradle.properties)"
+          minecraft_version="$(sed -n 's/^minecraft_version=//p' gradle.properties)"
+          mod_id="$(sed -n 's/^mod_id=//p' gradle.properties)"
+          if [[ "$GITHUB_REF_NAME" != "v$actual_version" ]]; then
+            echo "Release tag must be v${actual_version}; received ${GITHUB_REF_NAME}" >&2
+            exit 1
+          fi
+          echo "version=$expected_version" >> "$GITHUB_ENV"
+          echo "minecraft_version=$minecraft_version" >> "$GITHUB_ENV"
+          echo "mod_id=$mod_id" >> "$GITHUB_ENV"
+
+      - name: Build release jar
+        run: ./gradlew build
+
+      - name: Publish release jar
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          jar_path="build/libs/${mod_id}-${version}.jar"
+          if [[ ! -f "$jar_path" ]]; then
+            echo "Expected release artifact not found: $jar_path" >&2
+            exit 1
+          fi
+
+          release_type=release
+          if [[ "$RELEASE_IS_PRERELEASE" == "true" ]]; then
+            release_type=beta
+          fi
+
+          display_name="$RELEASE_NAME"
+          if [[ -z "$display_name" ]]; then
+            display_name="Miraculous Manatee Mod $version"
+          fi
+
+          changelog="$RELEASE_NOTES"
+          if [[ -z "$changelog" ]]; then
+            changelog="Release $version"
+          fi
+
+          metadata_path="$RUNNER_TEMP/curseforge-metadata.json"
+          response_path="$RUNNER_TEMP/curseforge-response.json"
+          jq -n \
+            --arg changelog "$changelog" \
+            --arg displayName "$display_name" \
+            --arg gameVersion "$minecraft_version" \
+            --arg releaseType "$release_type" \
+            '{
+              changelog: $changelog,
+              changelogType: "markdown",
+              displayName: $displayName,
+              gameVersionNames: [$gameVersion, "NeoForge", "Client", "Server"],
+              releaseType: $releaseType,
+              relations: {
+                projects: [
+                  {slug: "geckolib", type: "requiredDependency"},
+                  {slug: "terrablender", type: "requiredDependency"}
+                ]
+              }
+            }' > "$metadata_path"
+
+          if ! curl --fail-with-body --silent --show-error \
+            --header "X-Api-Token: $CURSEFORGE_API_TOKEN" \
+            --form "metadata=<$metadata_path" \
+            --form "file=@$jar_path" \
+            --output "$response_path" \
+            "https://minecraft.curseforge.com/api/projects/${CURSEFORGE_PROJECT_ID}/upload-file"; then
+            if [[ -f "$response_path" ]]; then
+              cat "$response_path" >&2
+            fi
+            exit 1
+          fi
+
+          file_id="$(jq -er '.id' "$response_path")"
+          echo "::notice title=CurseForge upload complete::Published file ID $file_id"
