@@ -73,6 +73,8 @@ in `gradle.properties`. There are no unit tests or gametests; verification is `.
 
 Java 21 toolchain is auto-provisioned (foojay). The Gradle launcher itself needs a modern JDK on `JAVA_HOME`.
 First build decompiles Minecraft (minutes). `run/`, `build/`, `.gradle/`, `.idea/` are gitignored.
+`.github/workflows/publish-curseforge.yml` builds and uploads the jar when a GitHub release named for the
+current `mod_version` is published; setup and release instructions are in README.md.
 `src/main/templates/META-INF/neoforge.mods.toml` is a template; `${...}` placeholders are filled from
 `gradle.properties` by the `generateModMetadata` task. Edit the template, never the generated copy.
 
@@ -164,4 +166,3 @@ Follow the README "Adding something new" section, then update the tables above. 
   class-load time; configs load after registration).
 - **Worldgen**: feature class under `worldgen/feature/` registered in `ModWorldgen`, JSON under
   `data/.../worldgen/`, reference from `manatee_springs.json`.
-

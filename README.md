@@ -25,6 +25,20 @@ dependencies, run `./gradlew --refresh-dependencies`. Game files (worlds, logs, 
 Mappings are Mojang's official names, made friendlier by Parchment. See
 https://github.com/NeoForged/NeoForm/blob/main/Mojang.md for the mapping license.
 
+## Publishing to CurseForge
+
+Publishing is automated by `.github/workflows/publish-curseforge.yml`. Before the first release:
+
+1. Create the mod project on CurseForge and copy its numeric project ID.
+2. Create a GitHub Actions environment named `curseforge`.
+3. Add `CURSEFORGE_PROJECT_ID` as a repository variable and `CURSEFORGE_API_TOKEN` as a repository secret.
+   The token must belong to a CurseForge account with permission to upload files to the project.
+
+To publish, update `mod_version` in `gradle.properties`, then publish a GitHub release whose tag is exactly
+`v<mod_version>` (for example, `v1.0.0`). The workflow runs the full build and uploads the release jar. The
+GitHub release notes become the CurseForge changelog; GitHub prereleases are uploaded as beta files, while
+normal releases are uploaded as release files. GeckoLib and TerraBlender are declared as required projects.
+
 ## Where things live
 
 ```
