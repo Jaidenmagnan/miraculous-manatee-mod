@@ -1,0 +1,72 @@
+{
+  "carvers": {
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
+  },
+  "downfall": 0.4,
+  "effects": {
+    "fog_color": 12638463,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    },
+    "sky_color": 7907327,
+    "water_color": 4445678,
+    "water_fog_color": 270131
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:seagrass_warm",
+      "minecraft:kelp_warm",
+      "minecraft:warm_ocean_vegetation"
+    ],
+    []
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "miraculousmanatee:evil_manatee",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 30
+      },
+      {
+        "type": "minecraft:drowned",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 20
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": [
+      {
+        "type": "miraculousmanatee:manatee",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 20
+      }
+    ]
+  },
+  "temperature": 0.8
+}

@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neetcoders.miraculousmanatee.MiraculousManateeMod;
 import net.neetcoders.miraculousmanatee.entity.BlubberProjectile;
+import net.neetcoders.miraculousmanatee.entity.ElderManatee;
 import net.neetcoders.miraculousmanatee.entity.EvilManatee;
 import net.neetcoders.miraculousmanatee.entity.Manatee;
 import net.neetcoders.miraculousmanatee.entity.Penguin;
@@ -27,6 +28,13 @@ public final class ModEntities {
             .register("evil_manatee", () -> EntityType.Builder.of(EvilManatee::new, MobCategory.MONSTER)
                     .sized(1.8f, 0.9f)
                     .build("evil_manatee"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ElderManatee>> ELDER_MANATEE = ENTITY_TYPES
+            .register("elder_manatee", () -> EntityType.Builder.of(ElderManatee::new, MobCategory.MONSTER)
+                    .sized(1.8f, 0.9f)
+                    .clientTrackingRange(10)
+                    .fireImmune()
+                    .build("elder_manatee"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<Penguin>> PENGUIN = ENTITY_TYPES
             .register("penguin", () -> EntityType.Builder.of(Penguin::new, MobCategory.CREATURE)

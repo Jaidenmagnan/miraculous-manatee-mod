@@ -1,0 +1,20 @@
+{
+  "textures": {
+    "head": "miraculousmanatee:block/manatee_head",
+    "particle": "miraculousmanatee:block/manatee_head"
+  },
+  "elements": [
+    {
+      "from": [4, 0, 4],
+      "to": [12, 8, 12],
+      "faces": {
+        "down":  { "uv": [0, 0, 4, 4],   "texture": "#head" },
+        "up":    { "uv": [4, 0, 8, 4],   "texture": "#head" },
+        "west":  { "uv": [0, 4, 4, 8],   "texture": "#head" },
+        "north": { "uv": [4, 4, 8, 8],   "texture": "#head" },
+        "east":  { "uv": [8, 4, 12, 8],  "texture": "#head" },
+        "south": { "uv": [12, 4, 16, 8], "texture": "#head" }
+      }
+    }
+  ]
+}

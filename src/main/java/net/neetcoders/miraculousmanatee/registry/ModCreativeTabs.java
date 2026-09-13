@@ -28,9 +28,16 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.SPRINGHEART_BLOOM);
                         output.accept(ModItems.AZURE_DEWCAP);
                         output.accept(ModItems.MOONLIT_LOTUS);
+                        output.accept(ModItems.MANATEE_KEY_PIECE);
+                        output.accept(ModItems.EVIL_MANATEE_KEY_PIECE);
+                        output.accept(ModItems.ELDER_MANATEE_KEY_PIECE);
+                        output.accept(ModItems.MANATEE_KEY);
+                        output.accept(ModItems.MANATEE_PORTAL_ALTAR);
                         output.accept(ModItems.PENGUIN_SPAWN_EGG);
                         output.accept(ModItems.MANATEE_SPAWN_EGG);
                         output.accept(ModItems.EVIL_MANATEE_SPAWN_EGG);
+                        output.accept(ModItems.ELDER_MANATEE_SPAWN_EGG);
+                        output.accept(ModItems.MANATEE_HEAD);
                     })
                     .build());
 
@@ -42,12 +49,19 @@ public final class ModCreativeTabs {
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ModItems.BLUBBER);
             event.accept(ModItems.BLUBBER_BLOCK);
+            event.accept(ModItems.MANATEE_KEY_PIECE);
+            event.accept(ModItems.EVIL_MANATEE_KEY_PIECE);
+            event.accept(ModItems.ELDER_MANATEE_KEY_PIECE);
+            event.accept(ModItems.MANATEE_KEY);
         } else if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
             event.accept(ModItems.LUMINOUS_CATTAIL);
             event.accept(ModItems.MISTVEIL_FERN);
             event.accept(ModItems.SPRINGHEART_BLOOM);
             event.accept(ModItems.AZURE_DEWCAP);
             event.accept(ModItems.MOONLIT_LOTUS);
+        } else if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+            event.accept(ModItems.MANATEE_PORTAL_ALTAR);
+            event.accept(ModItems.MANATEE_HEAD);
         }
     }
 }

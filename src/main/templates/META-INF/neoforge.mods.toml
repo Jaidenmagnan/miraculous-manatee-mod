@@ -13,7 +13,8 @@ displayName="${mod_name}"
 authors="neetcoders"
 description='''
 Manatees, penguins and the Manatee Springs biome. Tame a manatee with kelp, let it graze itself fat and
-store items in its belly, harvest blubber, and watch out for the evil manatee after dark.
+store items in its belly, harvest blubber, and watch out for the evil manatee after dark. Beat the Elder Manatee
+boss, forge the Manatee Key from the three key pieces and open a portal to the Manatee Dimension.
 '''
 
 [[dependencies.${mod_id}]]

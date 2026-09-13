@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "miraculousmanatee:manatee_key_piece"
+    },
+    {
+      "item": "miraculousmanatee:evil_manatee_key_piece"
+    },
+    {
+      "item": "miraculousmanatee:elder_manatee_key_piece"
+    }
+  ],
+  "result": {
+    "id": "miraculousmanatee:manatee_key",
+    "count": 1
+  }
+}

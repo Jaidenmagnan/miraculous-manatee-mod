@@ -9,6 +9,7 @@ import net.neetcoders.miraculousmanatee.registry.ModBlocks;
 import net.neetcoders.miraculousmanatee.registry.ModCreativeTabs;
 import net.neetcoders.miraculousmanatee.registry.ModEntities;
 import net.neetcoders.miraculousmanatee.registry.ModItems;
+import net.neetcoders.miraculousmanatee.registry.ModPoiTypes;
 import net.neetcoders.miraculousmanatee.worldgen.ModWorldgen;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -26,6 +27,7 @@ public final class MiraculousManateeMod {
 
     public MiraculousManateeMod(IEventBus modEventBus, ModContainer modContainer) {
         ModBlocks.BLOCKS.register(modEventBus);
+        ModPoiTypes.POI_TYPES.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);

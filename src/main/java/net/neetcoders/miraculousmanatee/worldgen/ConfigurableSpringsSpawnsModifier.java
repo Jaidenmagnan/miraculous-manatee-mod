@@ -16,6 +16,9 @@ import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
  * Adds the mod's natural spawns to Manatee Springs from the server config, so weights and group sizes can be
  * tuned without a datapack. Attached to the biome by
  * {@code data/miraculousmanatee/neoforge/biome_modifier/configurable_springs_spawns.json}.
+ *
+ * <p>Only Manatee Springs is config-driven: the Manatee Dimension's {@code manatee_plains} biome hard-codes its
+ * spawners in its own biome JSON instead.
  */
 public final class ConfigurableSpringsSpawnsModifier implements BiomeModifier {
     public static final ConfigurableSpringsSpawnsModifier INSTANCE = new ConfigurableSpringsSpawnsModifier();

@@ -29,6 +29,9 @@ public final class ModServerConfig {
     public static final ModConfigSpec.IntValue EVIL_MANATEE_RAGE_DURATION_TICKS;
     public static final SpawnConfig EVIL_MANATEE_SPAWN;
 
+    public static final ModConfigSpec.IntValue ELDER_MANATEE_SLAM_COOLDOWN_TICKS;
+    public static final ModConfigSpec.DoubleValue ELDER_MANATEE_SLAM_DAMAGE;
+
     static {
         BUILDER.push("manatee");
         MANATEE_SPAWN = SpawnConfig.define(BUILDER, "manatee", "manatee", 100, 1, 5);
@@ -82,6 +85,17 @@ public final class ModServerConfig {
                 .defineInRange("rageDurationTicks", 200, 1, 12000);
         // Evil manatees are night monsters; 25 is deliberately low next to the vanilla zombie's 95.
         EVIL_MANATEE_SPAWN = SpawnConfig.define(BUILDER, "evilManatee", "evil manatee", 25, 1, 2);
+        BUILDER.pop();
+
+        BUILDER.push("elderManatee");
+        ELDER_MANATEE_SLAM_COOLDOWN_TICKS = BUILDER
+                .comment("Cooldown in ticks between an elder manatee's tidal slam attacks.")
+                .translation(TRANSLATION_PREFIX + "elderManateeSlamCooldownTicks")
+                .defineInRange("slamCooldownTicks", 100, 20, 1200);
+        ELDER_MANATEE_SLAM_DAMAGE = BUILDER
+                .comment("Damage dealt to each entity caught in an elder manatee's tidal slam.")
+                .translation(TRANSLATION_PREFIX + "elderManateeSlamDamage")
+                .defineInRange("slamDamage", 6.0, 0.0, 40.0);
         BUILDER.pop();
 
         SPEC = BUILDER.build();

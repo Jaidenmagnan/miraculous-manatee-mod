@@ -1,0 +1,11 @@
+{
+  "type": "miraculousmanatee:manatee_dimension",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "miraculousmanatee:manatee_dimension",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "miraculousmanatee:manatee_plains"
+    }
+  }
+}
